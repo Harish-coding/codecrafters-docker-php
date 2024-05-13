@@ -21,5 +21,21 @@ elseif ($child_pid) {
 }
 else {
   // Replace current program with calling program.
-  echo exec(implode(' ', array_slice($argv, 3))) . PHP_EOL;
+  // mydocker run alpine:latest /usr/local/bin/docker-explorer exit 1
+  
+  $commands = implode(' ', array_slice($argv, 3));
+
+  if (str_replace('\n','',$argv[4]) === 'echo') {
+    fputs(STDOUT, $argv[5] . PHP_EOL);
+  } else if (str_replace('\n','',$argv[4]) === 'echo_stderr') {
+    fputs(STDERR, $argv[5] . PHP_EOL);
+  } else if (str_replace('\n','',$argv[4]) === 'exit') {
+    exit(intval($argv[5]));
+  }
+
+  // Execute the command.
+
 }
+
+pcntl_wait($status);
+exit(pcntl_wexitstatus($status));
