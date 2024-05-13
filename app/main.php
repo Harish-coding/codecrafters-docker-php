@@ -20,38 +20,38 @@ chroot("./temporary");
 $pid = pcntl_unshare(CLONE_NEWPID);
 
 
-// Define the function to fetch Docker token
-function get_docker_token($image) {
-  $auth_response = shell_exec("curl -s https://auth.docker.io/token?service=registry.docker.io\&scope=repository:$image:pull");
-  if (!$auth_response) {
-      echo "Failed to get Docker token.\n";
-      return null;
-  }
-  $auth_data = json_decode($auth_response);
-  return $auth_data->token;
-}
+// // Define the function to fetch Docker token
+// function get_docker_token($image) {
+//   $auth_response = shell_exec("curl -s https://auth.docker.io/token?service=registry.docker.io\&scope=repository:$image:pull");
+//   if (!$auth_response) {
+//       echo "Failed to get Docker token.\n";
+//       return null;
+//   }
+//   $auth_data = json_decode($auth_response);
+//   return $auth_data->token;
+// }
 
-// Define the function to fetch Docker image manifest
-function get_docker_image_manifest($image, $token) {
-  $image_response = shell_exec("curl -s -H \"Authorization: Bearer $token\" https://registry.hub.docker.com/v2/$image/manifests/latest");
-  if (!$image_response) {
-      echo "Failed to fetch Docker image manifest.\n";
-      return null;
-  }
-  return json_decode($image_response);
-}
+// // Define the function to fetch Docker image manifest
+// function get_docker_image_manifest($image, $token) {
+//   $image_response = shell_exec("curl -s -H \"Authorization: Bearer $token\" https://registry.hub.docker.com/v2/$image/manifests/latest");
+//   if (!$image_response) {
+//       echo "Failed to fetch Docker image manifest.\n";
+//       return null;
+//   }
+//   return json_decode($image_response);
+// }
 
-// Define the function to download image layers
-function download_image_layers($image, $token, $layers) {
+// // Define the function to download image layers
+// function download_image_layers($image, $token, $layers) {
   
-  foreach ($layers as $index => $fs_layer) {
-      shell_exec("curl -s -o $index.tar.gz -L -H \"Authorization: Bearer $token\" https://registry.hub.docker.com/v2/$image/blobs/$fs_layer->blobSum");
-      shell_exec("tar -xvf $index.tar.gz");
-      shell_exec("rm $index.tar.gz");
-  }
+//   foreach ($layers as $index => $fs_layer) {
+//       shell_exec("curl -s -o $index.tar.gz -L -H \"Authorization: Bearer $token\" https://registry.hub.docker.com/v2/$image/blobs/$fs_layer->blobSum");
+//       shell_exec("tar -xvf $index.tar.gz");
+//       shell_exec("rm $index.tar.gz");
+//   }
   
-  return $dir_path;
-}
+//   return $dir_path;
+// }
 
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -122,7 +122,7 @@ else {
     }
     // print the path where the layers are downloaded
     echo getcwd() . PHP_EOL;
-    
+
   }
 
 }
