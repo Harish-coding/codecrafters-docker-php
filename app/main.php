@@ -17,9 +17,9 @@ if ($child_pid == -1) {
 elseif ($child_pid) {
   // We're in parent.
   pcntl_wait($status);
-  echo "Child terminates!";
+  // echo "Child terminates!";
 }
 else {
   // Replace current program with calling program.
-  echo exec(implode(' ', array_slice($argv, 3)));
+  echo exec(implode(' ', array_slice($argv, 3))) . PHP_EOL;
 }
