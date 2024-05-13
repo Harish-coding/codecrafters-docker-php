@@ -6,6 +6,16 @@ while (ob_get_level() !== 0) {
   ob_end_clean();
 }
 
+// Create a temporary directory and copy necessary files. Inspired from FasterCoderOnEarth (2021)
+if (!is_dir('./temporary')) mkdir("./temporary", 0700);
+if (!is_dir('./temporary/bin')) mkdir("./temporary/bin", 0700);
+if (!is_dir('./temporary/lib')) mkdir("./temporary/lib", 0700);
+if (!is_dir('./temporary/usr/local/bin')) mkdir("./temporary/usr/local/bin", 0700, TRUE);
+shell_exec("cp -r /bin ./temporary");
+shell_exec("cp -r /lib ./temporary");
+shell_exec("cp -r /usr/local/bin/docker-explorer ./temporary/usr/local/bin");
+chroot("./temporary");
+
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 // echo "Logs from your program will appear here!\n";
 
