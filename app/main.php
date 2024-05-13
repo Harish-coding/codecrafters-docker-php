@@ -41,6 +41,23 @@ else {
     fputs(STDERR, $argv[5] . PHP_EOL);
   } else if (str_replace('\n','',$argv[4]) === 'exit') {
     exit(intval($argv[5]));
+  } else if (str_replace('\n','',$argv[4]) = 'ls') {
+    // mydocker run alpine:latest /usr/local/bin/docker-explorer ls /some_dir
+    $dir = $argv[5];
+
+    // Check if the directory exists.
+    if (!is_dir($dir)) {
+      echo "No such file or directory" . PHP_EOL;
+      exit(intval(1));
+      die;
+    }
+
+    // List the files in the directory.
+    $files = scandir($dir);
+    foreach ($files as $file) {
+      echo $file . PHP_EOL;
+    }
+    
   }
 
   // Execute the command.
