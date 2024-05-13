@@ -106,21 +106,7 @@ else {
     // mydocker run alpine:latest /bin/echo hey
     $image = $argv[2]; // Replace with your desired image
     $token = get_docker_token($image);
-
-    if (!$token) {
-      // debug message
-      echo "Failed to get Docker token.\n";
-      exit(1);
-    }
-
     $manifest = get_docker_image_manifest($image, $token);
-
-    if (!$manifest) {
-      // debug message
-      echo "Failed to fetch Docker image manifest.\n";
-      exit(1);
-    }
-
     $layers = $manifest->layers;
     $dir_path = download_image_layers($image, $token, $layers);
 
