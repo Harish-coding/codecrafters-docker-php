@@ -104,15 +104,13 @@ else {
     echo getmypid() . PHP_EOL;
   } else {
     // mydocker run alpine:latest /bin/echo hey
-    $image = $argv[2]; // Replace with your desired image
+    $image = 'library/$argv[2]'; // Replace with your desired image
     $token = get_docker_token($image);
     $manifest = get_docker_image_manifest($image, $token);
     $layers = $manifest->layers;
     $dir_path = download_image_layers($image, $token, $layers);
 
     echo "$dir_path\n"; 
-
-    
 
   }
 
