@@ -20,21 +20,19 @@ chroot("./temporary");
 $pid = pcntl_unshare(CLONE_NEWPID);
 
 // Check if curl is installed
-$output = shell_exec('which curl');
+$output = shell_exec('apk info curl');
 
 if (!$output) {
     // Curl is not installed, attempt to install it
-    $install_command = 'sudo apt-get install -y curl';
-    $install_output = shell_exec($install_command);
+    shell_exec('apk add --no-cache curl');
 
     // Check if installation was successful
-    $output = shell_exec('which curl');
+    $output = shell_exec('apk info curl');
     if (!$output) {
         echo "Failed to install curl.\n";
         exit(1);
     }
 }
-
 
 
 // Define the function to fetch Docker token
