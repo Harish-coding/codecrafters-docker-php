@@ -19,21 +19,6 @@ chroot("./temporary");
 // create a new namespace
 $pid = pcntl_unshare(CLONE_NEWPID);
 
-// Check if curl is installed
-$output = shell_exec('apk info curl');
-
-if (!$output) {
-    // Curl is not installed, attempt to install it
-    shell_exec('apk add --no-cache curl');
-
-    // Check if installation was successful
-    $output = shell_exec('apk info curl');
-    if (!$output) {
-        echo "Failed to install curl.\n";
-        exit(1);
-    }
-}
-
 
 // Define the function to fetch Docker token
 function get_docker_token($image) {
