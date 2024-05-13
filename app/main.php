@@ -181,7 +181,7 @@ else {
   } else if (str_replace('\n', '', $argv[4]) === 'mypid') {
     // mydocker run alpine:latest /usr/local/bin/docker-explorer mypid
     echo getmypid() . PHP_EOL;
-  } else if (str_replace('\n', '', $argv[4]) === 'hey') {
+  } else {
     // mydocker run alpine:latest /bin/echo hey
     $image_name = $argv[2]; // Replace with your desired image name
     $token = get_docker_token($image_name);
