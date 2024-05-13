@@ -190,11 +190,16 @@ else {
     $dir_path = download_image_layers($header, $image_name, $manifest["layers"]);
 
       
-    $completed_process = shell_exec("unshare -fpu chroot $dir_path $command " . implode(' ', $args));
-    $return_code = shell_exec("echo $?");
-
-    echo $completed_process;
-    echo $return_code;
+    // Run subprocess inside Docker container
+    $unshare_command = ["unshare", "-fpu", "chroot", $dir_path, $args[3], ...$args];
+    $output = [];
+    $return_code = null;
+    exec(implode(" ", array_map("escapeshellarg", $unshare_command)), $output, $return_code);
+    
+    // Print output to stdout and stderr
+    echo implode(PHP_EOL, $output) . PHP_EOL;
+    
+    // Exit with return code
     exit($return_code);
 
   }
