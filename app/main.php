@@ -108,12 +108,16 @@ else {
     $token = get_docker_token($image);
 
     if (!$token) {
+      // debug message
+      echo "Failed to get Docker token.\n";
       exit(1);
     }
 
     $manifest = get_docker_image_manifest($image, $token);
 
     if (!$manifest) {
+      // debug message
+      echo "Failed to fetch Docker image manifest.\n";
       exit(1);
     }
 
@@ -122,8 +126,9 @@ else {
 
     echo "$dir_path\n"; 
 
-  }
+    
 
+  }
 
 }
 
