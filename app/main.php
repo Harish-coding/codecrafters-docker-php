@@ -48,7 +48,7 @@ else {
     // Check if the directory exists.
     if (!is_dir($dir)) {
       echo "No such file or directory" . PHP_EOL;
-      exit(intval(1));
+      exit(intval(2));
       die;
     }
 
