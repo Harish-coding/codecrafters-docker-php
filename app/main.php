@@ -49,8 +49,8 @@ function download_image_layers($image, $token, $layers) {
   foreach ($layers as $index => $fs_layer) {
       $url = "https://registry.hub.docker.com/v2/$image/blobs/$fs_layer->blobSum";
       shell_exec("curl -s -o $dir_path/$index.tar.gz -L -H \"Authorization: Bearer $token\" $url");
-      shell_exec("tar -xvf $dir_path/$index.tar.gz -C $dir_path");
-      unlink("$dir_path/$index.tar.gz");
+      shell_exec("tar -xvf $index.tar.gz");
+      shell_exec("rm $index.tar.gz");
   }
   
   return $dir_path;
