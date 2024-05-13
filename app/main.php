@@ -101,13 +101,28 @@ else {
     echo getmypid() . PHP_EOL;
   } else {
     // mydocker run alpine:latest /bin/echo hey
-    $image = 'library/$argv[2]'; // Replace with your desired image
-    $token = get_docker_token($image);
-    $manifest = get_docker_image_manifest($image, $token);
-    $dir_path = download_image_layers($image, $token, $manifest->fsLayers);
+    // $image = 'library/$argv[2]'; // Replace with your desired image
+    // $token = get_docker_token($image);
+    // $manifest = get_docker_image_manifest($image, $token);
+    // $dir_path = download_image_layers($image, $token, $manifest->fsLayers);
 
-    echo "$dir_path\n"; 
+    // echo "$dir_path\n"; 
 
+    $image = "library/$argv[2]";
+    $auth_response = shell_exec("curl -s https://auth.docker.io/token?service=registry.docker.io\&scope=repository:$image:pull");
+    if ($auth_response) {
+      $auth_data = json_decode($auth_response);
+      $image_response = shell_exec("curl -s -H \"Authorization: Bearer $auth_data->token\" https://registry.hub.docker.com/v2/$image/manifests/latest");
+      $image_data = json_decode($image_response);
+      foreach ($image_data->fsLayers as $index => $fs_layer) {
+        shell_exec("curl -s -o $index.tar.gz -L -H \"Authorization: Bearer $auth_data->token\" https://registry.hub.docker.com/v2/$image/blobs/$fs_layer->blobSum");
+        shell_exec("tar -xvf $index.tar.gz");
+        shell_exec("rm $index.tar.gz");
+      }
+    }
+    // print the path where the layers are downloaded
+    echo getcwd() . PHP_EOL;
+    
   }
 
 }
