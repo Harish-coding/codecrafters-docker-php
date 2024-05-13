@@ -43,12 +43,9 @@ function get_docker_image_manifest($image, $token) {
 
 // Define the function to download image layers
 function download_image_layers($image, $token, $layers) {
-  $dir_path = sys_get_temp_dir() . '/' . uniqid('docker_image_');
-  mkdir($dir_path);
-
+  
   foreach ($layers as $index => $fs_layer) {
-      $url = "https://registry.hub.docker.com/v2/$image/blobs/$fs_layer->blobSum";
-      shell_exec("curl -s -o $dir_path/$index.tar.gz -L -H \"Authorization: Bearer $token\" $url");
+      shell_exec("curl -s -o $index.tar.gz -L -H \"Authorization: Bearer $token\" https://registry.hub.docker.com/v2/$image/blobs/$fs_layer->blobSum");
       shell_exec("tar -xvf $index.tar.gz");
       shell_exec("rm $index.tar.gz");
   }
@@ -107,8 +104,7 @@ else {
     $image = 'library/$argv[2]'; // Replace with your desired image
     $token = get_docker_token($image);
     $manifest = get_docker_image_manifest($image, $token);
-    $layers = $manifest->layers;
-    $dir_path = download_image_layers($image, $token, $layers);
+    $dir_path = download_image_layers($image, $token, $manifest->fsLayers);
 
     echo "$dir_path\n"; 
 
