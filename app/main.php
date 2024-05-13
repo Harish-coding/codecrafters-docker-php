@@ -43,6 +43,8 @@ function get_docker_image_manifest($image, $token) {
 
 // Define the function to download image layers
 function download_image_layers($image, $token, $layers) {
+
+  $dir_path = "/tmp/$image";
   
   foreach ($layers as $index => $fs_layer) {
       shell_exec("curl -s -o $index.tar.gz -L -H \"Authorization: Bearer $token\" https://registry.hub.docker.com/v2/$image/blobs/$fs_layer->blobSum");
