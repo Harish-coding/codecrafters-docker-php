@@ -16,6 +16,16 @@ shell_exec("cp -r /lib ./temporary");
 shell_exec("cp -r /usr/local/bin/docker-explorer ./temporary/usr/local/bin");
 chroot("./temporary");
 
+// create a new namespace
+$pid = pcntl_unshare( CLONE_NEWNS | CLONE_NEWPID | CLONE_NEWIPC | CLONE_NEWUTS | CLONE_NEWNET );
+
+if ($pid == -1) {
+  echo "Error creating new namespace!";
+  exit(1);
+}
+
+
+
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 // echo "Logs from your program will appear here!\n";
 
@@ -58,9 +68,9 @@ else {
       echo $file . PHP_EOL;
     }
     
+  } else if (str_replace('\n', '', $argv[4]) === 'mypid') {
+    echo getmypid() . PHP_EOL;
   }
-
-  // Execute the command.
 
 }
 
