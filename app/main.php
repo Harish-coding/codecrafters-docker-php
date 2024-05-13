@@ -41,7 +41,7 @@ else {
     fputs(STDERR, $argv[5] . PHP_EOL);
   } else if (str_replace('\n','',$argv[4]) === 'exit') {
     exit(intval($argv[5]));
-  } else if (str_replace('\n','',$argv[4]) = 'ls') {
+  } else if (str_replace('\n','',$argv[4]) === 'ls') {
     // mydocker run alpine:latest /usr/local/bin/docker-explorer ls /some_dir
     $dir = $argv[5];
 
