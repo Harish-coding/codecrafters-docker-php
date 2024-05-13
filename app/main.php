@@ -17,13 +17,7 @@ shell_exec("cp -r /usr/local/bin/docker-explorer ./temporary/usr/local/bin");
 chroot("./temporary");
 
 // create a new namespace
-$pid = pcntl_unshare( CLONE_NEWNS | CLONE_NEWPID | CLONE_NEWIPC | CLONE_NEWUTS | CLONE_NEWNET );
-
-if ($pid == -1) {
-  echo "Error creating new namespace!";
-  exit(1);
-}
-
+$pid = pcntl_unshare(CLONE_NEWPID);
 
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
